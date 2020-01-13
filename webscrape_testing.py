@@ -29,7 +29,7 @@ def nfl_year_scrape(year):
     table_rows = table.find_all('tr')
     for tr in table_rows:
         td = tr.find_all('td')
-        th = tr.find_all('th')
+        th = tr.find_all('thgit ')
         header = list([i.text for i in th])
         row = list([i.text for i in td])
         print(create_list(header, row))
