@@ -2,18 +2,8 @@ import requests
 from bs4 import BeautifulSoup
 import mysql_functions as my_funcs
 
-
-def imdb_season_1_scraper(id_list):
-
-    for id in id_list:
-        if id_list.index(id)%10 == 0:
-            print("on show number " + str((id_list.index(id) + 1)) )
-        page = requests.get("https://www.imdb.com/title/" + str(id[0]) +  "/episodes?season=1")
-        soup = BeautifulSoup(page.content, 'html.parser')
-        list = soup.find_all(class_="ipl-rating-star small")
-        #get all outer classes containing the rating and vote counts
-
 def create_tuple(player, year, stats, pick):
+    #puts player, year, stats and pick into a list where stats is alreay a list
     new_list = []
     del stats[2]
     new_list.append(player[0])
@@ -25,12 +15,15 @@ def create_tuple(player, year, stats, pick):
     return new_tuple
 
 
-def nfl_year_scrape(year):
-
+def combine_year_scrape(year):
+    #takes in a year and scrapes in order to get NFL combine info and draf pick rank for each rookie in that year
     page = requests.get("https://www.pro-football-reference.com/draft/" + str(year) + "-combine.htm")
     soup = BeautifulSoup(page.content, 'html.parser')
     table = soup.find('table')
     table_rows = table.find_all('tr')
+
+    tuple_list = []
+
     for tr in table_rows:
         td = tr.find_all('td')
         th = tr.find_all('th')
@@ -50,11 +43,26 @@ def nfl_year_scrape(year):
         #print(row)
         if len(row) == 11:
             data_tuple = create_tuple(header,year, row, pick)
-            my_funcs.insert_combine_year(data_tuple)
+            tuple_list.append(data_tuple)
+            #my_funcs.insert_combine_year(data_tuple)
             # print(len(data_list))
             # print(data_list)
 
+    return tuple_list
 
-    print(page)
 
-nfl_year_scrape(2000)
+def combine_year_paginate():
+    #loops through each year between 2001 and 2019
+    years = list(range(2001,2020))
+    for year in years:
+        year_tuples = combine_year_scrape(year)
+        print(year)
+        my_funcs.insert_combine_year(year_tuples)
+
+def clear_zeroes():
+    #goes through each of the columns in the column list and replaces zero values with NULL
+    column_list = ['40yd', 'vertical', 'bench', 'broad_jump', '3cone', 'shuttle', 'pick_number']
+
+    for column_name in column_list:
+        my_funcs.change_zero_to_nan(column_name)
+        #print(column_tuple)
