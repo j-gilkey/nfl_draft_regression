@@ -34,7 +34,7 @@ TABLES['nfl_combine_info'] = (
     broad_jump int,
     3cone decimal(10,8),
     shuttle decimal(10,8),
-    pick_numer int,
+    pick_number int,
     PRIMARY KEY (row_id)
     );""")
 
