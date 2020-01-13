@@ -31,3 +31,8 @@ def change_zero_to_nan(column_name):
 
     cursor.execute(update_row)
     cnx.commit()
+
+def get_all_combine_data():
+    get_data = ('(SELECT *  FROM nfl_combine_info)')
+    cursor.execute(get_data)
+    return cursor.fetchall()
