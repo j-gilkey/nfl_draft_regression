@@ -30,6 +30,11 @@ def combine_year_scrape(year):
         header = list([i.text for i in th])
         row = list([i.text for i in td])
         if row:
+            split_row = row[3].split('-')
+            split_sum = (int(split_row[0])*12) + int(split_row[1])
+            #print(row)
+            row[3] = split_sum
+            #print(row)
             final = row.pop()
             #print(final)
             if final:
@@ -50,10 +55,11 @@ def combine_year_scrape(year):
 
     return tuple_list
 
+#combine_year_scrape(2005)
 
 def combine_year_paginate():
-    #loops through each year between 2001 and 2019
-    years = list(range(2001,2020))
+    #loops through each year between 2000 and 2019
+    years = list(range(2000,2020))
     for year in years:
         year_tuples = combine_year_scrape(year)
         print(year)
@@ -66,3 +72,7 @@ def clear_zeroes():
     for column_name in column_list:
         my_funcs.change_zero_to_nan(column_name)
         #print(column_tuple)
+
+clear_zeroes()
+
+#combine_year_paginate()
