@@ -3,6 +3,9 @@
 df_drafted = df_combine.dropna(subset=['pick_number'])
 df_drafted.head()
 
+### drop columns that are correlated with other independent variables ###
+df_drafted = df_drafted.drop(columns=['3cone', 'broad_jump'])
+
 ### breakdown by position group ###
 
 db_df = df_drafted[(df_drafted['position'] == 'CB') |
