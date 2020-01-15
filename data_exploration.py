@@ -12,32 +12,7 @@ df = data_frame_creation.create_combine_data_frame()
 pd.set_option('display.max_columns', None)
 #pd.set_option('display.max_rows', None)
 
-def columns_to_float(df, column_list):
 
-    for c in column_list:
-        df[c] = df[c].astype(float)
-    return df
-
-df = columns_to_float(df,['height', 'weight', '40yd','vertical', 'bench', 'broad_jump', '3cone', 'shuttle'])
-
-
-def create_position_groupings(row):
-    position_dict = {
-    'DB' : ['CB', 'FS', 'SS', 'S', 'DB'],
-    'OL' : ['OT', 'OG', 'C', 'OL'],
-    'DL' : ['DE', 'DT', 'DL'],
-    'LB' : ['OLB', 'ILB', 'EDGE', 'LB'],
-    'ST' : ['K', 'P', 'LS'],
-    'SKILL' : ['RB', 'FB', 'WR', 'TE'],
-    'QB' : ['QB']}
-
-    for key in position_dict:
-        if row['position'] in position_dict[key]:
-            return key
-
-
-
-df['position_grouping'] = df.apply(lambda row: create_position_groupings(row), axis =1)
 
 def hist_plot(df, to_plot):
     #takes a dataframe and a column to create a hist plot on
