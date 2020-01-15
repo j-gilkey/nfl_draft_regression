@@ -19,8 +19,8 @@ cursor = cnx.cursor()
 
 TABLES = {}
 
-TABLES['nfl_combine_info'] = (
-"""CREATE TABLE nfl_combine_info (
+TABLES['nfl_combine_info_2'] = (
+"""CREATE TABLE nfl_combine_info_2 (
     row_id int NOT NULL AUTO_INCREMENT,
     player varchar(40),
     year int,
@@ -28,11 +28,11 @@ TABLES['nfl_combine_info'] = (
     school varchar(40),
     height varchar(100),
     weight int,
-    40yd decimal(10,8),
+    forty_yd decimal(10,8),
     vertical decimal(10,8),
     bench int,
     broad_jump int,
-    3cone decimal(10,8),
+    three_cone decimal(10,8),
     shuttle decimal(10,8),
     pick_number int,
     PRIMARY KEY (row_id)

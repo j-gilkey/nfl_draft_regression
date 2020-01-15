@@ -73,6 +73,6 @@ def clear_zeroes():
         my_funcs.change_zero_to_nan(column_name)
         #print(column_tuple)
 
-clear_zeroes()
+#clear_zeroes()
 
-#combine_year_paginate()
+combine_year_paginate()
