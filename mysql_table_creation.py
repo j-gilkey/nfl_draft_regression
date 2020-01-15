@@ -38,6 +38,17 @@ TABLES['nfl_combine_info'] = (
     PRIMARY KEY (row_id)
     );""")
 
+TABLES['starting_salary'] = (
+"""CREATE TABLE starting_salary (
+    row_id int NOT NULL AUTO_INCREMENT,
+    player varchar(40),
+    duration_years int,
+    total_value int,
+    initial_guaratees int,
+    total_gaurantees int,
+    PRIMARY KEY (row_id)
+    );""")
+
 
 #table creation function accepts a list and exectutes each element
 def table_creation(table_list):

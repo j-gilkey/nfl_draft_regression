@@ -25,6 +25,15 @@ def insert_combine_year(combine_tuples):
     cursor.executemany(add_row, combine_tuples)
     cnx.commit()
 
+def insert_salary_year(salary_tuples):
+    add_row = ("""INSERT INTO starting_salary
+               (player, duration_years, total_value, initial_guaratees, total_gaurantees)
+               VALUES (%s, %s, %s, %s, %s);""")
+
+    cursor.executemany(add_row, salary_tuples)
+    cnx.commit()
+
+
 def change_zero_to_nan(column_name):
     update_row = ('UPDATE nfl_combine_info SET ' +column_name+ ' = NULL WHERE '+column_name+' = 0;')
     print(update_row)
