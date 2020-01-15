@@ -1,39 +1,43 @@
-### create df for drafted players only###
+### import libraries
 
-df_drafted = df_combine.dropna(subset=['pick_number'])
-df_drafted.head()
+import requests
+import config
+from bs4 import BeautifulSoup as BS
+import mysql.connector
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+from statsmodels.formula.api import ols
+import statsmodels.api as sm
 
-### drop columns that are correlated with other independent variables ###
-df_drafted = df_drafted.drop(columns=['3cone', 'broad_jump'])
+cnx = mysql.connector.connect(
+  host=config.hostj,
+  user=config.userj,
+  passwd=config.pwj,
+  database = 'nfl_draft_info')
 
-### breakdown by position group ###
+cursor = cnx.cursor()
 
-db_df = df_drafted[(df_drafted['position'] == 'CB') |
-                  (df_drafted['position'] == 'FS') |
-                  (df_drafted['position'] == 'SS') |
-                  (df_drafted['position'] == 'S') |
-                  (df_drafted['position'] == 'DB')]
+## import DataFrame
 
-ol_df = df_drafted[(df_drafted['position'] == 'OT') |
-                  (df_drafted['position'] == 'OG') |
-                  (df_drafted['position'] == 'C') |
-                  (df_drafted['position'] == 'OL')]
+df_joined = pd.read_csv('df_joined.csv')
+df_joined = df_joined.set_index('id')
+df_joined = df_joined.drop(df_joined.columns[0], axis=1)
 
-dl_df = df_drafted[(df_drafted['position'] == 'DE') |
-                  (df_drafted['position'] == 'DT') |
-                  (df_drafted['position'] == 'DL')]
+## create position group map
 
-lb_df = df_drafted[(df_drafted['position'] == 'OLB') |
-                  (df_drafted['position'] == 'ILB') |
-                  (df_drafted['position'] == 'EDGE') |
-                  (df_drafted['position'] == 'LB')]
+position_groups = {'WR': 'BK', 'DE': 'DL', 'OLB': 'LB', 'RB': 'BK', 'OT': 'OL', 'CB': 'BK', 'QB': 'QB',
+                  'FS': 'BK', 'DT': 'DL', 'C': 'OL', 'P': 'ST', 'TE': 'BK', 'SS': 'BK', 'ILB': 'LB', 'OG': 'OL',
+                  'EDGE': 'LB', 'S': 'BK', 'FB': 'BK', 'LB': 'LB', 'DB': 'BK', 'OL': 'OL', 'DL': 'DL',
+                  'K': 'ST'}
 
-st_df = df_drafted[(df_drafted['position'] == 'K') |
-                  (df_drafted['position'] == 'P') |
-                  (df_drafted['position'] == 'LS')]
+### replace position column with position group column
+df_joined['pos_grp'] = df_joined['position'].map(position_groups)
+cols = df_joined.columns.tolist()
+cols = cols[:5] + cols[-1:] + cols[5:-1]
+cols.pop(7)
+df_joined = df_joined[cols]
 
-back_df = df_drafted[(df_drafted['position'] == 'RB') |
-                    (df_drafted['position'] == 'FB') |
-                    (df_drafted['position'] == 'WR') |
-                    (df_drafted['position'] == 'TE')]
-qb_df = df_drafted[(df_drafted['position'] == 'QB')]
+#### add dummies 
+position_dummy = pd.get_dummies(df_joined['pos_grp'],prefix = 'position', drop_first=True)
+df_with_dummies = pd.concat([df_joined, position_dummy], axis = 1)
