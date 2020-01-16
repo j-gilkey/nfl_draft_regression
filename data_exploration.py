@@ -7,11 +7,11 @@ import statsmodels.api as sm
 from statsmodels.stats.multicomp import pairwise_tukeyhsd
 from statsmodels.stats.multicomp import MultiComparison
 
-df = data_frame_creation.create_combine_data_frame()
+#df = data_frame_creation.create_combine_data_frame()
+df_joined = data_frame_creation.create_joined_data_frame()
 
 pd.set_option('display.max_columns', None)
 #pd.set_option('display.max_rows', None)
-
 
 
 def hist_plot(df, to_plot):
@@ -27,7 +27,18 @@ def hist_plot(df, to_plot):
 
 #hist_plot(df, 'weight')
 #hist_plot(df, 'height')
+#hist_plot(df_joined, 'forty_yd')
 #hist_plot(df_numbers, '3cone')
+
+#hist_plot(df_joined, 'log_salary')
+#hist_plot(df_joined, 'total_gaurantees')
+
+def scatter_plot(df, to_plot):
+    df = df.dropna(subset = [to_plot])
+    fig = plt.figure()
+    plt.style.use('seaborn')
+    sns.set_palette('colorblind')
+    ax = sns
 
 
 def simple_box_by_position(df, to_plot):
@@ -44,14 +55,14 @@ def simple_box_by_position(df, to_plot):
 
 #simple_box_by_position(df, 'weight')
 
-def pair_plot(df):
+def heat_corr(df, name):
     fig = plt.figure()
     #plt.clear()
     plt.style.use('seaborn')
     sns.set_palette('colorblind')
     corr = df.corr()
-    #sns.set(rc={'figure.figsize':(11.7,8.27)})
-    sns.heatmap(corr, xticklabels=corr.columns, yticklabels=corr.columns, annot=True)
+    sns.set(rc={'figure.figsize':(11.7,8.27)})
+    sns.heatmap(corr, xticklabels=corr.columns, yticklabels=corr.columns, annot=True).set_title(name)
     plt.show()
 
 def anova_by_position(df, to_plot):
@@ -74,7 +85,18 @@ def multi_by_position(df, to_plot):
 #     print(df[df['position_grouping'] == i]['weight'].describe())
     #print(df[df['position_grouping'] == i].mean)
 
-print(multi_by_position(df, 'height'))
+#print(multi_by_position(df, 'height'))
 #print(df[])
 #print(df[df['position_grouping'].isnull()])
 #pair_plot(df_numbers)
+
+def check_corr_for_group(df):
+    position_groups_list = list(df['position_grouping'].unique())
+    #df = df['position_grouping', 'height', 'weight', 'forty_yd', 'vertical', 'bench', 'broad_jump', 'three_cone', 'shuttle']
+    df = df.loc[:, ['position_grouping', 'avg_salary', 'height', 'weight', 'forty_yd', 'vertical', 'bench', 'broad_jump', 'three_cone', 'shuttle']]
+
+
+    heat_corr(df, 'Overall')
+
+
+check_corr_for_group(df_joined)
