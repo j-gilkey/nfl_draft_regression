@@ -42,6 +42,7 @@ TABLES['starting_salary'] = (
 """CREATE TABLE starting_salary (
     row_id int NOT NULL AUTO_INCREMENT,
     player varchar(40),
+    year int,
     duration_years int,
     total_value int,
     initial_guaratees int,

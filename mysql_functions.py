@@ -27,8 +27,8 @@ def insert_combine_year(combine_tuples):
 
 def insert_salary_year(salary_tuples):
     add_row = ("""INSERT INTO starting_salary
-               (player, duration_years, total_value, initial_guaratees, total_gaurantees)
-               VALUES (%s, %s, %s, %s, %s);""")
+               (player, year, duration_years, total_value, initial_guaratees, total_gaurantees)
+               VALUES (%s, %s, %s, %s, %s, %s);""")
 
     cursor.executemany(add_row, salary_tuples)
     cnx.commit()
@@ -48,11 +48,8 @@ def get_all_combine_data():
 
 def get_joined_data():
     get_data = ('''SELECT sal.row_id
-                ,sal.player
                 ,sal.duration_years
                 ,sal.total_value
-                ,sal.initial_guaratees
-                ,sal.total_gaurantees
                 ,com.year
                 ,com.position
                 ,com.height
@@ -73,8 +70,8 @@ def update_salary_names(current_name, corrected_name):
     update_row = ('UPDATE starting_salary SET player = "'+corrected_name+'" WHERE player = "'+current_name+'";')
     print(update_row)
 
-    #cursor.execute(update_row)
-    #cnx.commit()
+    cursor.execute(update_row)
+    cnx.commit()
 
 
 #update_salary_names("Adoree' Jackson", "Adoree Jackson")

@@ -67,7 +67,7 @@ def combine_year_paginate():
 
 def clear_zeroes():
     #goes through each of the columns in the column list and replaces zero values with NULL
-    column_list = ['40yd', 'vertical', 'bench', 'broad_jump', '3cone', 'shuttle', 'pick_number']
+    column_list = ['forty_yd', 'vertical', 'bench', 'broad_jump', 'three_cone', 'shuttle', 'pick_number']
 
     for column_name in column_list:
         my_funcs.change_zero_to_nan(column_name)
@@ -75,4 +75,4 @@ def clear_zeroes():
 
 #clear_zeroes()
 
-combine_year_paginate()
+#combine_year_paginate()
